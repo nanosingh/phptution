@@ -25,10 +25,11 @@ $arr = array(
 
 class person{
     function name(){
-echo "This is name section";
+    $a = "This is name section";
     }
-function age(){
+    function age(){
     echo "This is Age Section";
+        return $a;
 }
 }
 
@@ -51,7 +52,8 @@ echo "<hr><h2>Óbject</h2><pre>";
 // echo $arr['Marks']['English'];
 
 echo $object->age();
-
+//echo $object->name();
+echo $a;
 class cars{
     function model($key){
        $array = array(
@@ -72,3 +74,15 @@ $ca = $obj->model('color');
 foreach($ca as $car){
     echo '<br />'.$car;
 }
+
+$int = 21;
+echo '<br />Integer Value:'. $int;
+
+
+// constant
+
+define('INTE', 725);
+
+echo "<br />";
+
+echo INTE;
