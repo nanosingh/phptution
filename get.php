@@ -10,9 +10,12 @@
 <div class="container">
   <div class="row mt-5" style="text-align:justify;">
     <div class="col-sm-6 " > 
-        
+        <form action = '' method = 'GET'>
+          <input type = 'text' name = "gst">
+          <input type = 'submit' name= 'submit'>
+        </form>
 
-    <form action= "" method = "POST">
+    <form action= "" method = "GET">
     <div class="row mb-5">
     <label for="side-1" class="col-sm-2 col-form-label">Side 1</label>
     <div class="col-sm-10">
@@ -41,12 +44,18 @@
     </div>
 
     <div class="col-sm-6">
-       <?php
-       if (isset($_POST['submit']))
-       {
+      <?php
+      if (isset($_GET['gst']))
+      {
 
-        $side1= $_POST['side1']; 
-        $side2= $_POST['side2']; 
+       $side1= "https://razorpay.com/gst-number-search/" . $_GET['gst']; 
+       echo '<a target="_blank" href = "'.$side1.'" class = "btn btn-primary" >SEARCH</a>';
+      } 
+      if (isset($_GET['submit']))
+      {
+
+       $side1= $_GET['side1']; 
+        $side2= $_GET['side2']; 
         $res = $side1*$side2;
         $ans = $res/2;
         echo "Base of Traingle = ". $side1;
