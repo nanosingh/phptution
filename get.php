@@ -11,7 +11,7 @@
 
 <body>
 
-<?php
+    <?php
 $data = array (
   0 => 
   array (
@@ -4021,7 +4021,7 @@ $data = array (
             <div class="col-sm-6">
                 <form action="" method="get">
                     <div style="border:1px dashed blue; padding: 15px; background-color:ACE2E1;">
-                        <input type="text" name="search" class="form-control mb-3" required>
+                        <input type="text" name="page" class="form-control mb-3" required>
 
                         <input type="submit" class="btn btn-primary" value="Search">
                     </div>
@@ -4029,59 +4029,115 @@ $data = array (
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-sm-12"><hr>
-            <table class="table table-striped table-hover">
-              <!-- <pre> -->
-              <?php 
-              // print_r($data);
-              foreach($data as $row){
-              ?>
-              <tr>
-                <td><?= $row['Employee ID']; ?></td>
-                <td><?= $row['Designation']; ?></td>
-                <td><?= $row['Contact Number']; ?></td>
-                <td><?= $row['Date of Birth']; ?></td>
-                <td><?= $row['Father\'s Name']; ?></td>
-              </tr>
-              <?php } ?>
-        </div>
+
 
         <div class="row mt-5">
-          <?php 
+            <?php if(isset($_GET['pagination'])){
+            session_start();
+            $_SESSION['pagination'] = $_GET['pagination'];
+            $pagination = $_SESSION['pagination'];
+            echo $pagination; 
+          }
+          @session_start();
+          $pagination = $_SESSION['pagination'];
+
+          if(!$pagination){
+          $pagination = 10;
+          }
            $records = count($data);
-           $perpage = 10;
+           $perpage = $pagination;
            $totalpage = $records/$perpage;
-           ?>
-          <div class="col-sm-3"><hr>
-          Showing <?= $perpage; ?> of <?= $records; ?> records.
-        </div>
-        
-        <div class="col-sm-9 text-end"><hr>
-          <?php 
-           $cpage = $_GET['page'];
+
+           $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+           $current_page = ($records > 0) ? min($totalpage, $current_page) :1;  
+           $start = $current_page * $perpage - $perpage;
+           $slice = array_slice($data, $start, $perpage);
+
+
+          ?>
+
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <hr>
+                    <table class="table table-striped table-hover">
+                        <!-- <pre> -->
+                        <?php 
+              // print_r($data);
+              foreach($slice as $row){
+              ?>
+                        <tr>
+                            <td><?= $row['Employee ID']; ?></td>
+                            <td><?= $row['Designation']; ?></td>
+                            <td><?= $row['Contact Number']; ?></td>
+                            <td><?= $row['Date of Birth']; ?></td>
+                            <td><?= $row['Father\'s Name']; ?></td>
+                        </tr>
+                        <?php } ?>
+               
+                <div class="col-sm-3">
+                    <hr>
+                    Showing <?= $perpage; ?> of <?= $records; ?> records.
+                </div>
+
+                <div class="col-sm-9 text-end">
+                    <hr>
+                    <?php 
+           if(isset($_GET['page'])){
+             $cpage = $_GET['page'];
+           }else{ $cpage = 1;}
             for($i=1; $i<=$totalpage; $i++){ 
               if($cpage == $i){
               ?>
-              <a href="?page=<?= $i; ?>" class="btn btn-primary"><?= $i; ?></a>
-              <?php }else{ ?>
-                <a href="?page=<?= $i; ?>" class="btn btn-seconday"><?= $i; ?></a>
-              <?php } } ?>
-              
+                    <a href="?page=<?= $i; ?>" class="btn btn-primary"><?= $i; ?></a>
+                    <?php }else{ ?>
+                    <a href="?page=<?= $i; ?>" class="btn btn-seconday"><?= $i; ?></a>
+                    <?php } }  ?>
+
+                </div>
+
+<hr>
+
+<div class="pagination">
+  <?php 
+  $nop = 5;
+  if($cpage > 1){
+    echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">&lt;</a>';
+  }
+
+  for($p = 1; $p <= $nop; $p++){
+    echo '<a class="btn btn-secondary" href="?page='. $p. '"> '.$p.' </a>'; 
+  }
+
+  if($totalpage > $cpage){
+    echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">&gt; </a>';
+  }
+  ?>
+</div> 
+<form method="GET" action="">
+<select name="pagination" class="form-control">
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="25">25</option>
+<option value="50">50</option>
+<option value="100">100</option>
+</select>
+<input type="submit" value="GO" class="btn btn-primary">
+</form>
+
+
+                </div>
             </div>
-           
+
+
         </div>
 
 
-    </div>
 
 
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>
