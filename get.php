@@ -4039,8 +4039,11 @@ $data = array (
             echo $pagination; 
           }
           @session_start();
+          if(isset($_SESSION['pagination'])){
           $pagination = $_SESSION['pagination'];
-
+          }else{
+            $pagination='10';
+          }
           if(!$pagination){
           $pagination = 10;
           }
@@ -4099,14 +4102,19 @@ $data = array (
 
 <div class="pagination">
   <?php 
-  $nop = 5;
+  
   if($cpage > 1){
     echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">&lt;</a>';
   }
+  
+  echo '<a class="btn btn-secondary" href="?page='. ($cpage -2). '">'.($cpage -2).'</a>';
+  echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">'.($cpage -1).'</a>';
 
-  for($p = 1; $p <= $nop; $p++){
-    echo '<a class="btn btn-secondary" href="?page='. $p. '"> '.$p.' </a>'; 
-  }
+  echo '<a class="btn btn-primary" href="?page='. $cpage. '">'.$cpage.'</a>';
+  
+  echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">'.($cpage +1).'</a>';
+  echo '<a class="btn btn-secondary" href="?page='. ($cpage +2). '">'.($cpage +2).'</a>';
+ 
 
   if($totalpage > $cpage){
     echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">&gt; </a>';
