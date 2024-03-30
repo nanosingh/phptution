@@ -4031,8 +4031,7 @@ $data = array (
 
 
 
-        <div class="row mt-5">
-            <?php if(isset($_GET['pagination'])){
+        <?php if(isset($_GET['pagination'])){
             session_start();
             $_SESSION['pagination'] = $_GET['pagination'];
             $pagination = $_SESSION['pagination'];
@@ -4058,94 +4057,117 @@ $data = array (
 
 
           ?>
-
-            <div class="row mt-5">
-                <div class="col-sm-12">
-                    <hr>
-                    <table class="table table-striped table-hover">
-                        <!-- <pre> -->
-                        <?php 
+        <div class="row mt-5">
+            <div class="col-sm-1">
+                <form method="GET" action="">
+                    <select onchange="this.form.submit()" name="pagination" class="form-control">
+                        <option value="10" <?php if($pagination==10){ echo "selected"; } ?> >10</option>
+                        <option value="20" <?php if($pagination==20) { echo "selected"; } ?> >20</option>
+                        <option value="25" <?php if($pagination==25) { echo "selected"; } ?> >25</option>
+                        <option value="50" <?php if($pagination==50) { echo "selected"; } ?> >50</option>
+                        <option value="100" <?php if($pagination==100) { echo "selected"; } ?>>100</option>
+                    </select>
+                    <!-- <input type="submit" value="GO" class="btn btn-primary"> -->
+                </form>
+            </div>
+            <div class="col-sm-11"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <table class="table table-striped table-hover">
+                    <!-- <pre> -->
+                    <?php 
               // print_r($data);
               foreach($slice as $row){
               ?>
-                        <tr>
-                            <td><?= $row['Employee ID']; ?></td>
-                            <td><?= $row['Designation']; ?></td>
-                            <td><?= $row['Contact Number']; ?></td>
-                            <td><?= $row['Date of Birth']; ?></td>
-                            <td><?= $row['Father\'s Name']; ?></td>
-                        </tr>
-                        <?php } ?>
-               
-                <div class="col-sm-3">
-                    <hr>
-                    Showing <?= $perpage; ?> of <?= $records; ?> records.
-                </div>
+                    <tr>
+                        <td><?= $row['Employee ID']; ?></td>
+                        <td><?= $row['Designation']; ?></td>
+                        <td><?= $row['Contact Number']; ?></td>
+                        <td><?= $row['Date of Birth']; ?></td>
+                        <td><?= $row['Father\'s Name']; ?></td>
+                    </tr>
+                    <?php } ?>
+                </table>
+            </div>
+        </div>
 
-                <div class="col-sm-9 text-end">
-                    <hr>
-                    <?php 
+
+        <div class="row mt-5">
+            <div class="col-sm-3">
+                <hr>
+                Showing <?= $perpage; ?> of <?= $records; ?> records.
+            </div>
+
+            <div class="col-sm-8 text-end">
+                <hr>
+                <?php 
            if(isset($_GET['page'])){
              $cpage = $_GET['page'];
            }else{ $cpage = 1;}
-            for($i=1; $i<=$totalpage; $i++){ 
-              if($cpage == $i){
-              ?>
-                    <a href="?page=<?= $i; ?>" class="btn btn-primary"><?= $i; ?></a>
-                    <?php }else{ ?>
-                    <a href="?page=<?= $i; ?>" class="btn btn-seconday"><?= $i; ?></a>
-                    <?php } }  ?>
+            
+                
+                
+                if($cpage > 1){
+                  echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">&lt;</a>';
+                if($cpage > 2){
+                echo '<a class="btn btn-secondary" href="?page='. ($cpage -2). '">'.($cpage -2).'</a>';
+                }
+                echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">'.($cpage -1).'</a>';
+                }
+              
+                echo '<a class="btn btn-primary" href="?page='. $cpage. '">'.$cpage.'</a>';
+                
+                
+              
+                if($totalpage > $cpage){
+                  echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">'.($cpage +1).'</a>';
+                  $con = $totalpage -1;
+                  if($con > $cpage){
+                  echo '<a class="btn btn-secondary" href="?page='. ($cpage +2). '">'.($cpage +2).'</a>';
+                  }
+                   echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">&gt; </a>';
+                }
+                
+                ?>
 
-                </div>
-
-<hr>
-
-<div class="pagination">
-  <?php 
-  
-  if($cpage > 1){
-    echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">&lt;</a>';
-  }
-  
-  echo '<a class="btn btn-secondary" href="?page='. ($cpage -2). '">'.($cpage -2).'</a>';
-  echo '<a class="btn btn-secondary" href="?page='. ($cpage -1). '">'.($cpage -1).'</a>';
-
-  echo '<a class="btn btn-primary" href="?page='. $cpage. '">'.$cpage.'</a>';
-  
-  echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">'.($cpage +1).'</a>';
-  echo '<a class="btn btn-secondary" href="?page='. ($cpage +2). '">'.($cpage +2).'</a>';
- 
-
-  if($totalpage > $cpage){
-    echo '<a class="btn btn-secondary" href="?page='. ($cpage +1). '">&gt; </a>';
-  }
-  ?>
-</div> 
-<form method="GET" action="">
-<select name="pagination" class="form-control">
-<option value="10">10</option>
-<option value="20">20</option>
-<option value="25">25</option>
-<option value="50">50</option>
-<option value="100">100</option>
-</select>
-<input type="submit" value="GO" class="btn btn-primary">
-</form>
-
-
-                </div>
             </div>
+            <div class="col-sm-1 text-end">
+              <hr>
+              <form action="" method="get">
+              <input type="text" name="page" placeholder="<?= $cpage; ?>/ <?= $totalpage; ?>" class="form-control">
+              </form>  
+            </div>
+        </div>
 
+        <hr>
 
+        <div class="pagination">
+            <?php 
+  
+  
+  ?>
         </div>
 
 
 
+    </div>
+    </div>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
+    </div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+
+ 
+
 </body>
 
 </html>
