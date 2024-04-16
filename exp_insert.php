@@ -6,7 +6,11 @@
     <title>PHP Programs with Bootstrap</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+        <style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
 </head>
 
 <body>
@@ -24,7 +28,13 @@
         die('Connection Failed'. mysqli_connect_error());
         
     }
-       
+
+    $name = $_GET['name'];
+    $roll_no = $_GET['roll_no'];
+    $address = $_GET['address'];
+    $sql_insert = "INSERT INTO stu_profile (name, roll_no, address )
+    VALUES ('$name', '$roll_no','$address')";
+    
     ?>
     <div class="container">
         <div class="row" style="text-align:justify;">
@@ -49,37 +59,25 @@
                             <h2>Enter Student Detail</h2>
 
                         </center>
-                        <input type = 'text' name = 'name' value= 'Student Name' class = 'form-control mb-3' required >
-                        <input type = 'date' name = 'dob' value= 'Date Of Birth' class = 'form-control mb-3' required >
-                        <input type = 'number' name = 'roll_no' value= 'Roll Number' class = 'form-control mb-3' required >
-                        <input type = 'text' name = 'address' value= 'Student Address' class = 'form-control mb-3' >
-                        <input type = 'submit' name = 'submit' class = 'btn btn-primary'>
+                        
+                        <input type='text' name='name' value='Student Name' class='form-control mb-3' required>
+
+                        <input type='text' name='roll_no' value='Roll Number' class='form-control mb-3' required>
+                        <input type='text' name='address' value='Student Address' class='form-control mb-3'>
+                        <input type='submit' name='submit' class='btn btn-primary'>
                     </div>
-                   <?php
+                    <?php
 
-                   $insert =  "INSERT INTO stu_profile('name', 'dob', 'roll_no', 'address') 
-                   VALUE ('$_GET['name']','$_GET['dob']','$_GET['roll_no']','$_GET['address']')";
+                  
 
-                   if(mysqli_query($conn, $insert)){
-                       echo "Database Inserted";
-                   }else{
-                       echo "Record Not Inserted";
-                   }
+                   if(mysqli_query($conn,$sql_insert)){
+                    echo "Record Inserted";
+                }   else {
+                    echo "Sorry! Record Not Inserted";
+                }
                    ?>
                 </form>
-                <div class='col-sm-6'>
-                    <div style="border:1px dashed blue; padding: 15px; background-color:ACE2E1;">
-                        <tr>
-                            
-                            <th>Name <?=$_GET['name'] ?></th>
-                            <th>Roll No:<?=$_GET['dob']?></th>
-                            <th>Date of Birth<?=$_GET['roll_no']?></th>
-                            <th>Address<?=$_GET['address']?></th>
-
-                        </tr>
-
-                    </div>
-                </div>
+                
             </div>
             <div class="col-sm-6">
                 <form action='' method='get'>
@@ -90,33 +88,29 @@
                         </center>
 
                     </div>
-                    <div class='col-sm-6'>
+                    <div class='col-sm-12'>
                         <div style="border:1px dashed blue; padding: 15px; background-color:ACE2E1;">
+                       <table >
                         <tr>
-                            
-                            <td>Name <?=$_GET['name'] ?></td></br>
-                            <td>Roll No:<?=$_GET['dob']?></td></br>
-                            <td>Date of Birth<?=$_GET['roll_no']?></td></br>
-                            <td>Address<?=$_GET['address']?></td></br>
+                            <th>Name</th>
+                            <th>Roll No: </th>
+                            <th>Address </th>
+                    
+                    </tr>    
+                        <tr>
 
-                        </tr>
+                                <td><?=$_GET['name'] ?></td></br>
+                                
+                                <td><?=$_GET['roll_no']?></td></br>
+                                <td><?=$_GET['address']?></td></br>
+
+                            </tr>
+            </table>
 
                         </div>
                     </div>
                 </form>
-                <div class='col-sm-6'>
-                    <div style="border:1px dashed blue; padding: 15px; background-color:ACE2E1;">
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Roll No:</th>
-                            <th>Father Name</th>
-                            <th>Date Of Birth</th>
-
-                        </tr>
-
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -125,7 +119,7 @@
     </script>
 
 
-<?php mysqli_close($conn); ?>
+    <?php mysqli_close($conn); ?>
 </body>
 
 </html>
